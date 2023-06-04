@@ -1,13 +1,145 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+*{
+  box-sizing: border-box;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
+
+.gamePage {
+  display: flex;
+  flex-direction: row;
+  overflow: hidden;
+}
+
+.mainContainer {
+  width: 550px;
+  height: 90vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-wrap: nowrap;
+  overflow-y: auto;
+}
+
+.mainContainer::-webkit-scrollbar {
+  width: 0;  /* Remove scrollbar space */
+}
+
+.wordContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: 300px;
+  margin: 20px 0;
+}
+
+.charInput {
+  width: 50px;
+  height: 50px;
+  border: 1px solid;
+  text-align: center;
+  font-size: 40px;
+  font-weight: bold;
+  transition: transform 1.5s linear;
+}
+
+.green {
+  background-color: green;
+}
+
+.yellow {
+  background-color: yellow;
+}
+
+.grey {
+  background-color: grey;
+}
+
+.inputContainer {
+  margin: 10px;
+}
+
+.inputContainer > input {
+  padding: 8px 10px;
+  border: none;
+  box-shadow: 4px 4px 10px black;
+  background-color: rgb(89, 89, 90);
+  font-size: 16px;
+  color: white;
+}
+
+.inputContainer > input:focus {
+  outline: none;
+}
+
+.difficultyButton {
+  margin: 10px;
+  width: 150px;
+  font-size: 14px;
+  padding: 4px 5px;
+  cursor: pointer;
+}
+
+.selected {
+  background-color: green;
+}
+
+
+.hidden {
+  display: none;
+}
+
+.shake {
+  /* Start the shake animation and make the animation last for 0.5 seconds */
+  animation: shake 0.5s;
+
+  /* When the animation is finished, start again */
+  animation-iteration-count: 2;
+}
+
+@keyframes shake {
+  0% {
+    transform: translate(1px, 1px) rotate(0deg);
+  }
+  10% {
+    transform: translate(-1px, -2px) rotate(-1deg);
+  }
+  20% {
+    transform: translate(-3px, 0px) rotate(1deg);
+  }
+  30% {
+    transform: translate(3px, 2px) rotate(0deg);
+  }
+  40% {
+    transform: translate(1px, -1px) rotate(1deg);
+  }
+  50% {
+    transform: translate(-1px, 2px) rotate(-1deg);
+  }
+  60% {
+    transform: translate(-3px, 1px) rotate(0deg);
+  }
+  70% {
+    transform: translate(3px, 1px) rotate(-1deg);
+  }
+  80% {
+    transform: translate(-1px, -1px) rotate(1deg);
+  }
+  90% {
+    transform: translate(1px, 2px) rotate(0deg);
+  }
+  100% {
+    transform: translate(1px, -2px) rotate(-1deg);
+  }
+}
+
+
