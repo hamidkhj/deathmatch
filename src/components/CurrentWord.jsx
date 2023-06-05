@@ -22,6 +22,7 @@ function CurrentWord(props) {
                 name="word" id="word" 
                 value={word}
                 onChange={handleInput}
+                placeholder="Your Word"
             />
         </div>
     );

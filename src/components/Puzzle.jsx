@@ -7,6 +7,7 @@ function Puzzle() {
 
     const [playerWords, setPlayerWords] = useState([]);
     const [botWords, setBotWords] = useState([]);
+    const [allWords, setAllWords] = useState([]);
     const [isPlaying, setIsPlaying] = useState(true);
     const [winner, setWinner] = useState("");
     const [target, setTarget] = useState('');
@@ -18,18 +19,20 @@ function Puzzle() {
     }, [])
 
     const handlePlayerWords = (word) => {
-        console.log(isPlaying);
         if(isPlaying) {
             setPlayerWords(
                 [word, ...playerWords]
             );
                 
             if (word == target) {
+                setBotWords([word, ...botWords])
                 setIsPlaying(!isPlaying);
                 setWinner('Player');
             }
 
-            setBotWords([guess(), ...botWords])
+            let newGuess = guess();
+            setBotWords([newGuess, ...botWords])
+            setAllWords([word, newGuess, ...allWords]);
         }
     }
 
@@ -37,21 +40,23 @@ function Puzzle() {
         setValidGuess(words);
         setPlayerWords([]);
         setBotWords([]);
+        setAllWords([]);
         setWinner('');
         setIsPlaying(true);
         setTarget(words[Math.floor(Math.random() * words.length)].toLocaleLowerCase());
     }
 
     let filterWords = (greenLetters, yellowLetters, greyLetters, currentGuess) => {
+        console.log(target);
         let difficultyCheck = Math.random() * 10;
         let newGuessList = validGuesses;
+
         // filter words with grey letters
-        if (greyLetters.size > 0 && difficultyCheck < difficulty * 3) {
+        if (greyLetters.size > 0 && difficultyCheck < difficulty * 3 && difficulty > 2) {
 
             greyLetters.forEach(letter => {
                 newGuessList = newGuessList.filter((word) => {
-
-                    if (word.toLowerCase().indexOf(letter) != -1) {
+                    if (word.toLowerCase() != target && word.toLowerCase().indexOf(letter) != -1) {
                         return false;
                     }
 
@@ -61,7 +66,8 @@ function Puzzle() {
         }
 
         // filter words with green letters
-        if (greenLetters.length > 0 && difficultyCheck < difficulty * 3) {
+
+        if (greenLetters.length > 0) {
 
             greenLetters.forEach((letter, index) => {
                 newGuessList = newGuessList.filter((word) => {
@@ -75,7 +81,8 @@ function Puzzle() {
         }
 
         // filter words with yellow letters
-        if (yellowLetters.length > 0 && difficultyCheck < difficulty * 3) {
+
+        if (yellowLetters.length > 0 && difficultyCheck < difficulty * 3 && difficulty > 2) {
 
             newGuessList = newGuessList.filter((word) => {
                 let hasLetter = true;
@@ -89,12 +96,15 @@ function Puzzle() {
             })
         }
 
-        setValidGuess(newGuessList);
-        console.log(validGuesses);
-
         // remove current guess 
-        validGuesses.splice(validGuesses.indexOf(currentGuess), 1);
-
+        newGuessList = newGuessList.filter((word)=> {
+            return word.toLowerCase() != currentGuess;
+        })
+       
+       
+        setValidGuess(newGuessList);
+        
+        console.log(validGuesses);
     }
 
 
@@ -108,7 +118,7 @@ function Puzzle() {
 
         //generate first guess
         if (currentGuess === '') {
-            currentGuess = validGuesses[Math.floor(Math.random() * validGuesses.length)].toLocaleLowerCase().split('');
+            currentGuess = validGuesses[Math.floor(Math.random() * validGuesses.length)].toLowerCase().split('');
         }
 
         // compare guess to target
@@ -138,13 +148,26 @@ function Puzzle() {
             filterWords(greenLetters, yellowLetters, greyLetters, currentGuess.join(''));
         }
 
-        return currentGuess;
+        return currentGuess.join('');
     }
 
     return (
         <div className="gamePage">
 
             <div className="mainContainer">
+                {
+                    allWords.map((word, index) => {
+                        if (index % 2 != 0) {
+                            return <Word word={word} answer={target} key={index} isPlayer={false} />
+                        } else {
+                            return <Word word={word} answer={target} key={index} isPlayer={true} />
+                        }
+                    })
+                }
+            </div>
+
+            {/* view in fron of each other */}
+            {/* <div className="mainContainer">
                 <h1>player</h1>
                 {
                     playerWords.map((word, index) => {
@@ -159,7 +182,7 @@ function Puzzle() {
                         return <Word word={word} answer={target} key={index} isPlayer={false} />
                     })
                 }
-            </div>
+            </div> */}
             <div>
                 <button onClick={()=>{setDifficulty(1)}} className={`difficultyButton ${difficulty == 1 ? "selected" : ''}`}>easy</button>
                 <button onClick={()=>{setDifficulty(2)}} className={`difficultyButton ${difficulty == 2 ? "selected" : ''}`}>medium</button>
