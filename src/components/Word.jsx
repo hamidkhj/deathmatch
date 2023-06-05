@@ -3,11 +3,11 @@ import { useEffect, useState } from "react";
 function Word(props) {
     const [colors, setColors] = useState([]);
 
-    useEffect(()=>{
-        if(props.answer && props.isPlayer) {
+    useEffect(() => {
+        if (props.answer && props.isPlayer) { //check if its the player word set colors for it
             checkWord(props.answer, props.word, setColors);
         }
-    },[props.answer, props.word]);
+    }, [props.answer, props.word]);
 
     return (
 
@@ -22,31 +22,32 @@ function Word(props) {
     );
 }
 
-function checkWord (answer, guess, setColors) {
+// set the color of each letter for player words
+function checkWord(answer, guess, setColors) {
     // find green letters
     let currentGuess = guess.split('');
     answer = answer.split('')
     let colors = {};
-    for (let i = 0; i < 5; i++){
+    for (let i = 0; i < 5; i++) {
         if (currentGuess[i] == answer[i]) {
             colors[i] = 'green';
             currentGuess[i] = '_';
             answer[i] = '_';
-        } 
+        }
     }
     // find yellow letters
     answer = answer.toString();
-    for (let i = 0; i < 5; i++){
+    for (let i = 0; i < 5; i++) {
 
         if (currentGuess[i] != "_") {
-            if(answer.indexOf(currentGuess[i]) != -1) {
+            if (answer.indexOf(currentGuess[i]) != -1) {
                 // setColors({...colors, i: "yellow"})
                 colors[i] = 'yellow';
             } else {
                 // setColors({...colors, i: "grey"})
                 colors[i] = 'grey';
             }
-        } 
+        }
     }
     setColors(colors)
 }

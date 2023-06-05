@@ -1,14 +1,15 @@
 import { useState } from "react";
 
+// handle player input
 function CurrentWord(props) {
     const [word, setWord] = useState('');
 
     const handleInput = (e) => {
-        const regex = /^[a-zA-Z]+$/
+        const regex = /^[a-zA-Z]+$/ //make sure only letters are enterd
         if (e.target.value === '' || regex.test(e.target.value)) {
-            setWord(e.target.value)
+            setWord(e.target.value.toLowerCase())
         }
-        if (e.target.value.length === 5) {
+        if (e.target.value.length === 5) { //take player input if 5 letters are entered
             setWord('');
             props.handlePlayerWords(e.target.value)
         }
